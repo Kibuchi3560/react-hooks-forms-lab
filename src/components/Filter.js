@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from 'react';
+import ShoppingList from './ShoppingList';
+import Header from './Header';
+import itemData from '../data/items';
 
-function Filter({ onCategoryChange }) {
+function App() {
+  const [items, setItems] = useState(itemData);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  function handleDarkModeClick() {
+    setIsDarkMode((isDarkMode) => !isDarkMode);
+  }
+
   return (
-    <div className="Filter">
-      <input type="text" name="search" placeholder="Search..." />
-      <select name="filter" onChange={onCategoryChange}>
-        <option value="All">Filter by category</option>
-        <option value="Produce">Produce</option>
-        <option value="Dairy">Dairy</option>
-        <option value="Dessert">Dessert</option>
-      </select>
+    <div className={'App ' + (isDarkMode ? 'dark' : 'light')}>
+      <Header isDarkMode={isDarkMode} onDarkModeClick={handleDarkModeClick} />
+      <ShoppingList items={items} setItems={setItems} />
     </div>
   );
 }
 
-export default Filter;
+export default App;

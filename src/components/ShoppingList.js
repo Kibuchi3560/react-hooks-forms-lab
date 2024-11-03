@@ -1,32 +1,39 @@
-import React, { useState } from "react";
-import ItemForm from "./ItemForm";
-import Filter from "./Filter";
-import Item from "./Item";
-
-function ShoppingList({ items }) {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  function handleCategoryChange(event) {
-    setSelectedCategory(event.target.value);
+import React from 'react';
+function ItemForm(props) {
+  function handleNewItemNameChange(e) {
+    props.setNewItemName(e.target.value);
   }
-
-  const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
-
-    return item.category === selectedCategory;
-  });
-
+  function handleNewItemCategoryChange(e) {
+    props.setNewItemCategory(e.target.value);
+  }
   return (
-    <div className="ShoppingList">
-      <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
-      <ul className="Items">
-        {itemsToDisplay.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
-        ))}
-      </ul>
-    </div>
+    <form className="NewItem" onSubmit={props.onItemFormSubmit}>
+      <label>
+        Name:
+        <input
+          type="text"
+          name="name"
+          value={props.newItemName}
+          onChange={handleNewItemNameChange}
+        />
+      </label>
+
+      <label>
+        Category:
+        <select
+          name="category"
+          value={props.newItemCategory}
+          onChange={handleNewItemCategoryChange}
+        >
+          <option value="Produce">Produce</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Dessert">Dessert</option>
+        </select>
+      </label>
+
+      <button type="submit">Add to List</button>
+    </form>
   );
 }
 
-export default ShoppingList;
+export default ItemForm;
